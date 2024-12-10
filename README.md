@@ -239,30 +239,42 @@ curl --request DELETE \
 
 ## Base de donénes PotsgreSQL
 
+### Adminer
+
+- Interface d'administration web [Adminer](http://localhost:8181/?pgsql=db&username=kanban&db=kanban&ns=public)
+- Sélectionner Système : __postgresql__
+- Serveur : __db__
+- Utilisateur : cf. ./db/.env
+- Mot de passe : cf. ./db/.env
+- Base de données : cf. ./db/.env
+
 ### Schéma
 
 ```sql
 DROP TABLE IF EXISTS "tasks";
-DROP SEQUENCE IF EXISTS pizzas_id_seq;
-CREATE SEQUENCE pizzas_id_seq INCREMENT 1 MINVALUE 1 MAXVALUE 2147483647 CACHE 1;
+DROP SEQUENCE IF EXISTS tasks_id_seq;
+CREATE SEQUENCE tasks_id_seq INCREMENT 1 MINVALUE 1 MAXVALUE 2147483647 CACHE 1;
 
 CREATE TABLE "public"."tasks" (
-    "id" integer DEFAULT nextval('pizzas_id_seq') NOT NULL,
-    "name" character varying NOT NULL,
-    "ingredients" character varying NOT NULL,
-    "price" double precision NOT NULL,
-    CONSTRAINT "ix_pizzas_name" UNIQUE ("name"),
-    CONSTRAINT "pizzas_pkey" PRIMARY KEY ("id")
+    "id" integer DEFAULT nextval('tasks_id_seq') NOT NULL,
+    "content" character varying NOT NULL,
+    "urgence" integer NOT NULL,
+    "importance" integer NOT NULL,
+    "created_at" timestamp NOT NULL,
+    "updated_at" timestamp,
+    "is_completed" boolean NOT NULL,
+    "completed_at" timestamp,
+    CONSTRAINT "tasks_pkey" PRIMARY KEY ("id")
 ) WITH (oids = false);
 
-CREATE INDEX "ix_pizzas_id" ON "public"."tasks" USING btree ("id");
+CREATE INDEX "ix_tasks_id" ON "public"."tasks" USING btree ("id");
 ```
 
 ### Data
 
 ```sql
-INSERT INTO "tasks" ("id", "name", "ingredients", "price") VALUES
-(1, 'Margherita', 'Basilic, Mozzarella', 6);
+INSERT INTO "tasks" ("id", "content", "urgence", "importance", "created_at", "updated_at", "is_completed", "completed_at") VALUES
+(1, 'Tondre la pelouse', 1, 2, '2024-12-10 14:36:00.503193', NULL, 'f', NULL);
 ```
 
 --
