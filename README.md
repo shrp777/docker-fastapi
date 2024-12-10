@@ -1,14 +1,28 @@
-# Kanban - Preuve de concept : Docker + FastAPI (Python)
+# Kanban API - Preuve de concept : Docker + FastAPI (Python) + PostgreSQL
 
 API REST basée sur le langage Python et le framework FastAPI (<https://fastapi.tiangolo.com/>).
 
-- Attention le projet FastAPI mis en place n'est qu'une base de travail à améliorer. Il est recommandé d'organiser le code de l'API à travers différents fichiers spécifiques, en séparant les modèles de la logique métier (cf. <https://fastapi.tiangolo.com/tutorial/bigger-applications/>).
+- Attention le projet Kanban API est réalisé à titre pédagogique. Il s'agit d'une base qui mérite d'être améliorée pour envisager un passage en production.
+
+- Améliorations possibles :
+  - Architecture davantage découplée (cf. <https://fastapi.tiangolo.com/tutorial/bigger-applications/>)
+  - Emploi de handlers pour chaque route pour éviter de mélanger routage, contrôleurs et logique métier
+  - Emploi d'une couche de services
 
 - Tutoriel officiel :
 <https://fastapi.tiangolo.com/deployment/docker/>
 
 - PostgreSQL + Docker
 <https://www.docker.com/blog/how-to-use-the-postgres-docker-official-image/>
+
+## Stack technologique
+
+- Base de données : PostgreSQL
+- Langage de programmation : Python 3.10
+- Framework : FastAPI
+- ORM : SQLAlchemy
+- Validateur : Pydantic
+- Architecture d'API : REST
 
 ## Installation
 
@@ -54,114 +68,166 @@ API REST basée sur le langage Python et le framework FastAPI (<https://fastapi.
 curl http://localhost:8080
 ```
 
-### Collection pizzas
+### Collection tasks
 
-#### Création d'une pizza
+#### Création d'une task
 
 ```sh
 curl --request POST \
-  --url http://localhost:8080/pizzas \
+  --url http://localhost:8080/tasks \
   --header 'content-type: application/json' \
   --data '{
-  "name": "Margherita",
-  "ingredients": "Basilic, Mozzarella",
-  "price": 6
+  "content":"Faire du sport",
+  "urgence":1,
+  "importance":5
 }'
 ```
 
 ```http
-"POST /pizzas HTTP/1.1" 201
+"POST /tasks HTTP/1.1" 201
 ```
 
 ```JSON
 {
-  "name": "Margherita",
-  "ingredients": "Basilic, Mozzarella",
-  "price": 6,
-  "id": 1
+  "id": 1,
+  "content": "Faire du sport",
+  "urgence": 1,
+  "importance": 5,
+  "created_at": "2024-12-10T11:37:45.148692",
+  "updated_at": null,
+  "completed_at": null,
+  "is_completed": false
 }
 ```
 
-#### Lecture de toutes les pizzas
+#### Lecture de toutes les tasks
 
-__🚨Par défaut la collection est vide🚨__
+Par défaut la collection est vide.
 
 ```sh
 curl --request GET \
-  --url http://localhost:8080/pizzas
+  --url http://localhost:8080/tasks
 ```
 
 ```http
-"GET /pizzas HTTP/1.1" 200
+"GET /tasks HTTP/1.1" 200
 ```
 
 ```JSON
 [
   {
-    "name": "Margherita",
-    "ingredients": "Basilic, Mozzarella",
-    "price": 6,
-    "id": 1
+    "id": 1,
+    "content": "Faire du sport",
+    "urgence": 1,
+    "importance": 5,
+    "created_at": "2024-12-10T11:37:45.148692",
+    "updated_at": null,
+    "completed_at": null,
+    "is_completed": false
+  },
+  {
+    "id": 2,
+    "content": "Tondre la pelouse",
+    "urgence": 1,
+    "importance": 2,
+    "created_at": "2024-12-10T11:39:06.424590",
+    "updated_at": null,
+    "completed_at": null,
+    "is_completed": false
   }
 ]
 ```
 
-#### Lecture de 1 pizza par son id
+#### Lecture de 1 task par son id
 
 ```sh
 curl --request GET \
-  --url http://localhost:8080/pizzas/1
+  --url http://localhost:8080/tasks/1
 ```
 
 ```http
-"GET /pizzas/1 HTTP/1.1" 200
+"GET /tasks/1 HTTP/1.1" 200
 ```
 
 ```JSON
 {
-  "name": "Margherita",
-  "ingredients": "Basilic, Mozzarella",
-  "price": 6,
-  "id": 1
+  "id": 1,
+  "content": "Faire du sport",
+  "urgence": 1,
+  "importance": 5,
+  "created_at": "2024-12-10T11:37:45.148692",
+  "updated_at": null,
+  "completed_at": null,
+  "is_completed": false
 }
 ```
 
-### Mise à jour d'1 pizza par son id
+### Mise à jour d'1 task par son id
 
 ```sh
 curl --request PUT \
-  --url http://localhost:8080/pizzas/1 \
+  --url http://localhost:8080/tasks/1 \
   --header 'content-type: application/json' \
   --data '{
   "id":1,
-  "name": "Margherita",
-  "ingredients": "Mozzarella, Basilic",
-  "price": 6
+  "created_at":"2024-07-07 07:07:07",
+  "content": "Faire du sport",
+  "urgence": 1,
+  "importance": 4,
+  "is_completed":false
 }'
 ```
 
 ```http
-"PUT /pizzas/1 HTTP/1.1" 200
+"PUT /tasks/1 HTTP/1.1" 200
 ```
 
 ```json
 {
-  "name": "Margherita",
-  "ingredients": "Mozzarella, Basilic",
-  "price": 7,
-  "id": 1
+  "id": 1,
+  "content": "Faire du sport",
+  "urgence": 1,
+  "importance": 4,
+  "created_at": "2024-07-07T07:07:07",
+  "updated_at": "2024-12-10T11:39:54.659197",
+  "completed_at": null,
+  "is_completed": false
 }
 ```
 
-#### Suppression d'une pizza selon son id
+#### Complètion d'une task selon son id
 
 ```sh
-curl --request DELETE \
-  --url http://localhost:8080/pizzas/1
+curl --request PATCH \
+  --url http://localhost:8080/tasks/1
 ```
 
 ```http
-"DELETE /pizzas/1 HTTP/1.1" 204
+"PATCH /tasks/1 HTTP/1.1" 200
+```
+
+```json
+{
+  "id": 1,
+  "content": "Faire du sport",
+  "urgence": 1,
+  "importance": 4,
+  "created_at": "2024-07-07T07:07:07",
+  "updated_at": "2024-12-10T11:40:53.372111",
+  "completed_at": "2024-12-10T11:40:53.372103",
+  "is_completed": true
+}
+```
+
+#### Suppression d'une task selon son id
+
+```sh
+curl --request DELETE \
+  --url http://localhost:8080/tasks/1
+```
+
+```http
+"DELETE /tasks/1 HTTP/1.1" 204
 ```
 
 - Documentation Swagger générée automatiquement par FastAPI
@@ -176,11 +242,11 @@ curl --request DELETE \
 ### Schéma
 
 ```sql
-DROP TABLE IF EXISTS "pizzas";
+DROP TABLE IF EXISTS "tasks";
 DROP SEQUENCE IF EXISTS pizzas_id_seq;
 CREATE SEQUENCE pizzas_id_seq INCREMENT 1 MINVALUE 1 MAXVALUE 2147483647 CACHE 1;
 
-CREATE TABLE "public"."pizzas" (
+CREATE TABLE "public"."tasks" (
     "id" integer DEFAULT nextval('pizzas_id_seq') NOT NULL,
     "name" character varying NOT NULL,
     "ingredients" character varying NOT NULL,
@@ -189,13 +255,13 @@ CREATE TABLE "public"."pizzas" (
     CONSTRAINT "pizzas_pkey" PRIMARY KEY ("id")
 ) WITH (oids = false);
 
-CREATE INDEX "ix_pizzas_id" ON "public"."pizzas" USING btree ("id");
+CREATE INDEX "ix_pizzas_id" ON "public"."tasks" USING btree ("id");
 ```
 
 ### Data
 
 ```sql
-INSERT INTO "pizzas" ("id", "name", "ingredients", "price") VALUES
+INSERT INTO "tasks" ("id", "name", "ingredients", "price") VALUES
 (1, 'Margherita', 'Basilic, Mozzarella', 6);
 ```
 

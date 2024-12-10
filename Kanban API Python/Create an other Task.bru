@@ -1,0 +1,23 @@
+meta {
+  name: Create an other Task
+  type: http
+  seq: 2
+}
+
+post {
+  url: http://localhost:8080/tasks
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "content":"Tondre la pelouse",
+    "urgence":1,
+    "importance":2
+  }
+}
+
+assert {
+  res.status: eq 201
+}
