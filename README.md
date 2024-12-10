@@ -2,18 +2,7 @@
 
 API REST basée sur le langage Python et le framework FastAPI (<https://fastapi.tiangolo.com/>).
 
-- Attention le projet Kanban API est réalisé à titre pédagogique. Il s'agit d'une base qui mérite d'être améliorée pour envisager un passage en production.
-
-- Améliorations possibles :
-  - Architecture davantage découplée (cf. <https://fastapi.tiangolo.com/tutorial/bigger-applications/>)
-  - Emploi de handlers pour chaque route pour éviter de mélanger routage, contrôleurs et logique métier
-  - Emploi d'une couche de services
-
-- Tutoriel officiel :
-<https://fastapi.tiangolo.com/deployment/docker/>
-
-- PostgreSQL + Docker
-<https://www.docker.com/blog/how-to-use-the-postgres-docker-official-image/>
+Ce projet est réalisé à des fins pédagogiques. Des améliorations doivent être envisagées pour un passage en production (sécurité, modularité...).
 
 ## Stack technologique
 
@@ -26,15 +15,12 @@ API REST basée sur le langage Python et le framework FastAPI (<https://fastapi.
 
 ## Installation
 
-- Créer les fichiers ./api/.env et ./db/.env basés sur les fichiers modèles ./api/.env.example et ./db/.env.example (à adapter).
+Créer les fichiers :
+
+- ./api/.env
+- ./db/.env
 
 ## Commandes Docker utiles
-
-- Création d'une image Docker à partir du fichier Dockerfile et des sources :
-`docker build -t fastapiimage .`
-
-- Création d'un container à partir de l'image "fastapiimage" précédemment créée :
-`docker run -d --name fastapi -p 8080:80 fastapiimage`
 
 - Initialisation des services Docker :
 `docker compose up`
@@ -60,7 +46,17 @@ API REST basée sur le langage Python et le framework FastAPI (<https://fastapi.
 - Clôture des services Docker :
 `docker compose stop`
 
-## Routes l'API
+- Création d'une image Docker à partir du fichier Dockerfile et des sources :
+`docker build -t fastapiimage .`
+
+- Création d'un container à partir de l'image "fastapiimage" précédemment créée :
+`docker run -d --name fastapi -p 8080:80 fastapiimage`
+
+## Routes de l'API
+
+### Documentation Swagger générée automatiquement par FastAPI
+
+<http://localhost:8080/docs>
 
 ### Racine
 
@@ -229,9 +225,6 @@ curl --request DELETE \
 ```http
 "DELETE /tasks/1 HTTP/1.1" 204
 ```
-
-- Documentation Swagger générée automatiquement par FastAPI
-<http://localhost:8080/docs>
 
 ## Adminer (interface d'administration de base de données)
 
