@@ -11,7 +11,7 @@ from ..db import get_db
 from datetime import datetime
 
 from ..services.task_service import TaskService
-from ..services.task_exceptions import AlreadyCompletedException, UnfoundException, BadDataException, UnknownException
+from ..services.exceptions.task_exceptions import AlreadyCompletedException, UnfoundException, BadDataException, UnknownException
 
 
 router = APIRouter()
@@ -63,9 +63,8 @@ def create_task(task: Task, db: Session = Depends(get_db)) -> TaskEntity:
 @router.put("/tasks/{id}", response_model=Task)
 def update_task(id: int, updated_task: Task, db: Session = Depends(get_db)):
     """
-    Met à jour une task sélectionnée selon son id
+    Met à jour une task sélectionnée par son id
     """
-
     try:
         task_service = TaskService(db)
         return task_service.updateTask(id, updated_task)
@@ -79,9 +78,8 @@ def update_task(id: int, updated_task: Task, db: Session = Depends(get_db)):
 @router.patch("/tasks/{id}", response_model=Task)
 def complete_task(id: int, db: Session = Depends(get_db)):
     """
-    Complète une task selon son id
+    Complète une task sélectionnée par son id
     """
-
     try:
         task_service = TaskService(db)
         return task_service.completeTask(id)
