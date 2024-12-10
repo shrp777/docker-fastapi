@@ -58,13 +58,18 @@ Créer les fichiers :
 
 <http://localhost:8080/docs>
 
+### API testable avec le logiciel Bruno
+
+- Télécharger et installer Bruno (<https://docs.usebruno.com/introduction/what-is-bruno>)
+- Importer la collection dans le dossier ./Kanban API Python
+
 ### Racine
 
 ```sh
 curl http://localhost:8080
 ```
 
-### Collection tasks
+### Endpoint tasks
 
 #### Création d'une task
 
