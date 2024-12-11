@@ -18,13 +18,25 @@ router = APIRouter()
 
 
 @router.get("/tasks", response_model=List[Task])
-def get_all_tasks(db: Session = Depends(get_db)):
+def get_all_tasks(db: Session = Depends(get_db), completed: bool = None, urgence: int = None, importance: int = None):
     """
     Récupère la liste des tasks
     """
     try:
         task_service = TaskService(db)
-        return task_service.findAll()
+
+        if urgence != None and importance != None:
+            return task_service.filterByUrgenceAndImportance(urgence=urgence, importance=importance)
+        elif urgence != None:
+            return task_service.filterByUrgenceAndImportance(urgence=urgence)
+        elif importance != None:
+            return task_service.filterByUrgenceAndImportance(importance=importance)
+        elif completed == 1:
+            return task_service.findAllCompleted()
+        elif completed == 0:
+            return task_service.findAllUncompleted()
+        else:
+            return task_service.findAll()
     except UnknownException as e:
         print(e)
         raise HTTPException(status_code=500)

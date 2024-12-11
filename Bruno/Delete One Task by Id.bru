@@ -1,15 +1,15 @@
 meta {
-  name: Get One Task by Id
+  name: Delete One Task by Id
   type: http
-  seq: 4
+  seq: 10
 }
 
-get {
+delete {
   url: http://localhost:8080/tasks/1
   body: none
   auth: none
 }
 
 assert {
-  res.status: eq 200
+  res.status: eq 204
 }

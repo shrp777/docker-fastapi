@@ -1,12 +1,12 @@
 meta {
-  name: Update One Task by Id
+  name: Complete One Task by Id
   type: http
-  seq: 5
+  seq: 9
 }
 
-put {
-  url: http://localhost:8080/tasks/1
-  body: json
+patch {
+  url: http://localhost:8080/tasks/3
+  body: none
   auth: none
 }
 
@@ -16,8 +16,9 @@ body:json {
     "created_at":"2024-07-07 07:07:07",
     "content": "Faire du sport",
     "urgence": 1,
-    "importance": 4,
-    "is_completed":false
+    "importance": 5,
+    "is_completed":true,
+    "completed_at":"2024-08-08 08:08:08"
   }
 }
 

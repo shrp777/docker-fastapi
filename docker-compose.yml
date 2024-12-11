@@ -35,12 +35,15 @@ services:
       interval: 1s
       timeout: 5s
       retries: 10
+
+  #en production, désactiver adminer
   adminer:
     image: adminer
     ports:
       - 8181:8080
     networks:
       - kanban-ntwrk
+
 networks:
   kanban-ntwrk:
     driver: bridge

@@ -101,7 +101,7 @@ curl --request POST \
 }
 ```
 
-#### Lecture de toutes les tasks
+#### Lecture de toutes les tasks, classées par ordre de création descendant
 
 Par défaut la collection est vide.
 
@@ -117,7 +117,7 @@ curl --request GET \
 ```JSON
 [
   {
-    "id": 1,
+    "id": 2,
     "content": "Faire du sport",
     "urgence": 1,
     "importance": 5,
@@ -127,7 +127,7 @@ curl --request GET \
     "is_completed": false
   },
   {
-    "id": 2,
+    "id": 1,
     "content": "Tondre la pelouse",
     "urgence": 1,
     "importance": 2,
@@ -137,6 +137,37 @@ curl --request GET \
     "is_completed": false
   }
 ]
+```
+
+#### Lecture de toutes les tasks complétées, classées par ordre de création descendant
+
+```sh
+curl --request GET \
+  --url 'http://localhost:8080/tasks?completed=1'
+```
+
+#### Lecture de toutes les tasks non complétées, classées par ordre de création descendant
+
+```sh
+curl --request GET \
+  --url 'http://localhost:8080/tasks?completed=0'
+```
+
+#### Lecture de toutes les tasks par niveau d'urgence et/ou d'importance, classées par ordre de création descendant
+
+```sh
+curl --request GET \
+  --url 'http://localhost:8080/tasks?urgence=1&importance=2'
+```
+
+```sh
+curl --request GET \
+  --url 'http://localhost:8080/tasks?urgence=1'
+```
+
+```sh
+curl --request GET \
+  --url 'http://localhost:8080/tasks?importance=2'
 ```
 
 #### Lecture de 1 task par son id
@@ -163,7 +194,7 @@ curl --request GET \
 }
 ```
 
-### Mise à jour d'1 task par son id
+#### Mise à jour intégrale d'1 task selon son id
 
 ```sh
 curl --request PUT \
@@ -231,13 +262,11 @@ curl --request DELETE \
 "DELETE /tasks/1 HTTP/1.1" 204
 ```
 
-## Adminer (interface d'administration de base de données)
+## Adminer (interface web d'administration de base de données)
+
+Pour des raisons de sécurité, __désactiver ce service en production__.
 
 <http://localhost:8181>
-
-## Base de donénes PotsgreSQL
-
-### Adminer
 
 - Interface d'administration web [Adminer](http://localhost:8181/?pgsql=db&username=kanban&db=kanban&ns=public)
 - Sélectionner Système : __postgresql__
@@ -245,6 +274,8 @@ curl --request DELETE \
 - Utilisateur : cf. ./db/.env
 - Mot de passe : cf. ./db/.env
 - Base de données : cf. ./db/.env
+
+## Base de données PotsgreSQL
 
 ### Schéma
 

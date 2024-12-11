@@ -1,6 +1,7 @@
 from ..models.task import Task, TaskEntity
 from .exceptions.task_exceptions import UnfoundException, AlreadyCompletedException, UnknownException
 from datetime import datetime
+from sqlalchemy import desc
 
 
 class TaskService:
@@ -63,12 +64,50 @@ class TaskService:
             print(e)
             raise UnknownException
 
-    def findAll(self):
+    def filterByUrgenceAndImportance(self, urgence: int = None, importance: int = None):
         """
-        Récupère la liste des tasks
+        Récupère la liste des tasks par ordre de création décroissant filtrées par niveau d'importance et d'urgence
         """
         try:
-            return self.db.query(TaskEntity).all()
+            if urgence != None and importance != None:
+                return self.db.query(TaskEntity).order_by(TaskEntity.id.desc()).filter(TaskEntity.importance == importance, TaskEntity.urgence == urgence).all()
+            elif importance != None:
+                return self.db.query(TaskEntity).order_by(TaskEntity.id.desc()).filter(TaskEntity.importance == importance).all()
+            elif urgence != None:
+                return self.db.query(TaskEntity).order_by(TaskEntity.id.desc()).filter(TaskEntity.urgence == urgence).all()
+            else:
+                raise BadDataException
+
+        except Exception as e:
+            print(e)
+            raise UnknownException
+
+    def findAll(self):
+        """
+        Récupère la liste des tasks par ordre de création décroissant
+        """
+        try:
+            return self.db.query(TaskEntity).order_by(TaskEntity.id.desc()).all()
+        except Exception as e:
+            print(e)
+            raise UnknownException
+
+    def findAllCompleted(self):
+        """
+        Récupère la liste des tasks accomplies par ordre de création décroissant
+        """
+        try:
+            return self.db.query(TaskEntity).where(TaskEntity.is_completed == True).order_by(TaskEntity.id.desc()).all()
+        except Exception as e:
+            print(e)
+            raise UnknownException
+
+    def findAllUncompleted(self):
+        """
+        Récupère la liste des tasks non-accomplies par ordre de création décroissant
+        """
+        try:
+            return self.db.query(TaskEntity).where(TaskEntity.is_completed == False).order_by(TaskEntity.id.desc()).all()
         except Exception as e:
             print(e)
             raise UnknownException
