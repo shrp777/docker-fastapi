@@ -1,8 +1,8 @@
-# Kanban API - Preuve de concept : Docker + FastAPI (Python) + PostgreSQL
+# Docker + FastAPI (Python) + PostgreSQL
 
-API REST basée sur le langage Python et le framework FastAPI (<https://fastapi.tiangolo.com/>).
+Projet de base pour la mise en place d'une API REST basée sur le langage Python et le framework FastAPI (<https://fastapi.tiangolo.com/>).
 
-Ce projet est réalisé à des fins pédagogiques. Des améliorations doivent être envisagées pour un passage en production (sécurité, modularité...).
+Ce projet est fourni à des fins pédagogiques.
 
 ## Stack technologique
 
@@ -19,6 +19,36 @@ Créer les fichiers :
 
 - ./api/.env
 - ./db/.env
+
+## Arborescence du projet
+
+```text
+api
+├── Dockerfile
+├── README.md
+├── app
+│   ├── __init__.py
+│   ├── __pycache__
+│   │   ├── __init__.cpython-39.pyc
+│   │   └── main.cpython-39.pyc
+│   ├── db.py
+│   ├── internal
+│   │   ├── __init__.py
+│   │   └── admin.py
+│   ├── main.py
+│   ├── models
+│   │   ├── __init__.py
+│   │   └── pizza.py
+│   ├── routers
+│   │   ├── __init__.py
+│   │   └── pizza_router.py
+│   └── services
+│       ├── __init__.py
+│       ├── exceptions
+│       │   └── __init__.py
+│       └── pizza_service.py
+└── requirements.txt
+```
 
 ## Commandes Docker utiles
 
@@ -37,9 +67,6 @@ Créer les fichiers :
 - Initialisation des services Docker avec activation du mode watch (= hot reloading) :
 `docker compose up --watch`
 
-- Démarrage des services Docker :
-`docker compose start`
-
 - Consultation des services Docker actifs :
 `docker compose ps`
 
@@ -47,10 +74,10 @@ Créer les fichiers :
 `docker compose stop`
 
 - Création d'une image Docker à partir du fichier Dockerfile et des sources :
-`docker build -t fastapiimage .`
+`docker build -t <image-name> .`
 
-- Création d'un container à partir de l'image "fastapiimage" précédemment créée :
-`docker run -d --name fastapi -p 8080:80 fastapiimage`
+- Création d'un container à partir de l'image `<image-name>` précédemment créée :
+`docker run -d --name <image-name> -p 8080:80 <image-name>`
 
 ## Routes de l'API
 
@@ -58,208 +85,50 @@ Créer les fichiers :
 
 <http://localhost:8080/docs>
 
-### API testable avec le logiciel Bruno
+### Endpoint pizzas
 
-- Télécharger et installer Bruno (<https://docs.usebruno.com/introduction/what-is-bruno>)
-- Importer la collection dans le dossier ./Kanban API Python
-
-### Racine
-
-```sh
-curl http://localhost:8080
-```
-
-### Endpoint tasks
-
-#### Création d'une task
-
-```sh
-curl --request POST \
-  --url http://localhost:8080/tasks \
-  --header 'content-type: application/json' \
-  --data '{
-  "content":"Faire du sport",
-  "urgence":1,
-  "importance":5
-}'
-```
-
-```http
-"POST /tasks HTTP/1.1" 201
-```
-
-```JSON
-{
-  "id": 1,
-  "content": "Faire du sport",
-  "urgence": 1,
-  "importance": 5,
-  "created_at": "2024-12-10T11:37:45.148692",
-  "updated_at": null,
-  "completed_at": null,
-  "is_completed": false
-}
-```
-
-#### Lecture de toutes les tasks, classées par ordre de création descendant
-
-Par défaut la collection est vide.
+#### Lecture de tous les items
 
 ```sh
 curl --request GET \
-  --url http://localhost:8080/tasks
+  --url http://localhost:8080/pizzas
 ```
 
 ```http
-"GET /tasks HTTP/1.1" 200
+GET /pizzas HTTP/1.1
+Host: localhost:8080
 ```
 
-```JSON
+```json
 [
   {
-    "id": 2,
-    "content": "Faire du sport",
-    "urgence": 1,
-    "importance": 5,
-    "created_at": "2024-12-10T11:37:45.148692",
-    "updated_at": null,
-    "completed_at": null,
-    "is_completed": false
-  },
-  {
     "id": 1,
-    "content": "Tondre la pelouse",
-    "urgence": 1,
-    "importance": 2,
-    "created_at": "2024-12-10T11:39:06.424590",
-    "updated_at": null,
-    "completed_at": null,
-    "is_completed": false
+    "name": "Margherita",
+    "created_at": "2024-12-12T13:25:25.162192",
+    "updated_at": null
   }
 ]
 ```
 
-#### Lecture de toutes les tasks complétées, classées par ordre de création descendant
+#### Lecture d'un item sélectionné par son id
 
 ```sh
 curl --request GET \
-  --url 'http://localhost:8080/tasks?completed=1'
-```
-
-#### Lecture de toutes les tasks non complétées, classées par ordre de création descendant
-
-```sh
-curl --request GET \
-  --url 'http://localhost:8080/tasks?completed=0'
-```
-
-#### Lecture de toutes les tasks par niveau d'urgence et/ou d'importance, classées par ordre de création descendant
-
-```sh
-curl --request GET \
-  --url 'http://localhost:8080/tasks?urgence=1&importance=2'
-```
-
-```sh
-curl --request GET \
-  --url 'http://localhost:8080/tasks?urgence=1'
-```
-
-```sh
-curl --request GET \
-  --url 'http://localhost:8080/tasks?importance=2'
-```
-
-#### Lecture de 1 task par son id
-
-```sh
-curl --request GET \
-  --url http://localhost:8080/tasks/1
+  --url http://localhost:8080/pizzas/1
 ```
 
 ```http
-"GET /tasks/1 HTTP/1.1" 200
-```
-
-```JSON
-{
-  "id": 1,
-  "content": "Faire du sport",
-  "urgence": 1,
-  "importance": 5,
-  "created_at": "2024-12-10T11:37:45.148692",
-  "updated_at": null,
-  "completed_at": null,
-  "is_completed": false
-}
-```
-
-#### Mise à jour intégrale d'1 task selon son id
-
-```sh
-curl --request PUT \
-  --url http://localhost:8080/tasks/1 \
-  --header 'content-type: application/json' \
-  --data '{
-  "id":1,
-  "created_at":"2024-07-07 07:07:07",
-  "content": "Faire du sport",
-  "urgence": 1,
-  "importance": 4,
-  "is_completed":false
-}'
-```
-
-```http
-"PUT /tasks/1 HTTP/1.1" 200
+GET /pizzas/1 HTTP/1.1
+Host: localhost:8080
 ```
 
 ```json
 {
   "id": 1,
-  "content": "Faire du sport",
-  "urgence": 1,
-  "importance": 4,
-  "created_at": "2024-07-07T07:07:07",
-  "updated_at": "2024-12-10T11:39:54.659197",
-  "completed_at": null,
-  "is_completed": false
+  "name": "Margherita",
+  "created_at": "2024-12-12T13:25:25.162192",
+  "updated_at": null
 }
-```
-
-#### Complètion d'une task selon son id
-
-```sh
-curl --request PATCH \
-  --url http://localhost:8080/tasks/1
-```
-
-```http
-"PATCH /tasks/1 HTTP/1.1" 200
-```
-
-```json
-{
-  "id": 1,
-  "content": "Faire du sport",
-  "urgence": 1,
-  "importance": 4,
-  "created_at": "2024-07-07T07:07:07",
-  "updated_at": "2024-12-10T11:40:53.372111",
-  "completed_at": "2024-12-10T11:40:53.372103",
-  "is_completed": true
-}
-```
-
-#### Suppression d'une task selon son id
-
-```sh
-curl --request DELETE \
-  --url http://localhost:8080/tasks/1
-```
-
-```http
-"DELETE /tasks/1 HTTP/1.1" 204
 ```
 
 ## Adminer (interface web d'administration de base de données)
@@ -268,42 +137,34 @@ Pour des raisons de sécurité, __désactiver ce service en production__.
 
 <http://localhost:8181>
 
-- Interface d'administration web [Adminer](http://localhost:8181/?pgsql=db&username=kanban&db=kanban&ns=public)
+- Interface d'administration web [Adminer](http://localhost:8181/?pgsql=db&username=pizzas&db=pizzas&ns=public)
 - Sélectionner Système : __postgresql__
 - Serveur : __db__
 - Utilisateur : cf. ./db/.env
 - Mot de passe : cf. ./db/.env
 - Base de données : cf. ./db/.env
 
-## Base de données PotsgreSQL
+## Base de données PostgreSQL
 
-### Schéma
+```SQL
 
-```sql
-DROP TABLE IF EXISTS "tasks";
-DROP SEQUENCE IF EXISTS tasks_id_seq;
-CREATE SEQUENCE tasks_id_seq INCREMENT 1 MINVALUE 1 MAXVALUE 2147483647 CACHE 1;
+DROP TABLE IF EXISTS "pizzas";
+DROP SEQUENCE IF EXISTS pizzas_id_seq;
+CREATE SEQUENCE pizzas_id_seq INCREMENT 1 MINVALUE 1 MAXVALUE 2147483647 CACHE 1;
 
-CREATE TABLE "public"."tasks" (
-    "id" integer DEFAULT nextval('tasks_id_seq') NOT NULL,
-    "content" character varying NOT NULL,
-    "urgence" integer NOT NULL,
-    "importance" integer NOT NULL,
+CREATE TABLE "public"."pizzas" (
+    "id" integer DEFAULT nextval('pizzas_id_seq') NOT NULL,
+    "name" character varying NOT NULL,
     "created_at" timestamp NOT NULL,
     "updated_at" timestamp,
-    "is_completed" boolean NOT NULL,
-    "completed_at" timestamp,
-    CONSTRAINT "tasks_pkey" PRIMARY KEY ("id")
+    CONSTRAINT "pizzas_name_key" UNIQUE ("name"),
+    CONSTRAINT "pizzas_pkey" PRIMARY KEY ("id")
 ) WITH (oids = false);
 
-CREATE INDEX "ix_tasks_id" ON "public"."tasks" USING btree ("id");
-```
+CREATE INDEX "ix_pizzas_id" ON "public"."pizzas" USING btree ("id");
 
-### Data
-
-```sql
-INSERT INTO "tasks" ("id", "content", "urgence", "importance", "created_at", "updated_at", "is_completed", "completed_at") VALUES
-(1, 'Tondre la pelouse', 1, 2, '2024-12-10 14:36:00.503193', NULL, 'f', NULL);
+INSERT INTO "pizzas" ("id", "name", "created_at", "updated_at") VALUES
+(1, 'Margherita', '2024-12-12 13:25:25.162192', NULL);
 ```
 
 --

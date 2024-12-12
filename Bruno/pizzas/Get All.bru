@@ -1,0 +1,15 @@
+meta {
+  name: Get All
+  type: http
+  seq: 1
+}
+
+get {
+  url: http://localhost:8080/pizzas
+  body: none
+  auth: none
+}
+
+assert {
+  res.status: eq 200
+}

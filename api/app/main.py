@@ -3,22 +3,30 @@ from fastapi.exceptions import RequestValidationError
 from fastapi.responses import PlainTextResponse, JSONResponse
 from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
+from starlette.middleware.base import BaseHTTPMiddleware
+from starlette.responses import Response
+
 
 from pydantic import ValidationError
 
-
-from .routers import task_router
+from .routers import pizza_router
 
 app = FastAPI()
-app.include_router(task_router.router)
 
 app.add_middleware(
     CORSMiddleware,
+    # autorise les requêtes HTTP en provenance de toutes les origines
     allow_origins=["*"],
+    # autorise les headers HTTP Authorization
     allow_credentials=True,
+    # autorise tous les verbes HTTP
     allow_methods=["*"],
+    # autorise tous les headers HTTP
     allow_headers=["*"],
 )
+
+
+app.include_router(pizza_router.router)
 
 
 @app.exception_handler(RequestValidationError)
@@ -35,4 +43,4 @@ def read_root():
     """
     Racine de l'API
     """
-    return {"message": "Kanban API"}
+    return {"message": "Pizzas API"}

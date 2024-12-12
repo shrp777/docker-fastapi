@@ -11,7 +11,7 @@ services:
       db:
         condition: service_healthy
     networks:
-      - kanban-ntwrk
+      - ntwrk
     develop:
       watch:
         - path: ./api
@@ -23,13 +23,13 @@ services:
     user: postgres
     env_file:
       - ./db/.env
-    volumes:
-      - ./db/init.sql:/docker-entrypoint-initdb.d/init.sql
+    #volumes:
+    #  - ./db/init.sql:/docker-entrypoint-initdb.d/init.sql
     #  - ./db/data:/var/lib/postgresql/data/
     ports:
       - 5432:5432
     networks:
-      - kanban-ntwrk
+      - ntwrk
     healthcheck:
       test: ["CMD-SHELL", "pg_isready"]
       interval: 1s
@@ -42,8 +42,8 @@ services:
     ports:
       - 8181:8080
     networks:
-      - kanban-ntwrk
+      - ntwrk
 
 networks:
-  kanban-ntwrk:
+  ntwrk:
     driver: bridge

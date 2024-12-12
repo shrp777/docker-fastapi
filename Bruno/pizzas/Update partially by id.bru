@@ -1,0 +1,22 @@
+meta {
+  name: Update partially by id
+  type: http
+  seq: 6
+}
+
+patch {
+  url: http://localhost:8080/pizzas/1
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "id":1,
+    "name":"Marinara"
+  }
+}
+
+assert {
+  res.status: eq 200
+}

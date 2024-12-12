@@ -1,6 +1,6 @@
 {
   "version": "1",
-  "name": "Kanban API Python",
+  "name": "Pizzas API Python",
   "type": "collection",
   "ignore": [
     "node_modules",

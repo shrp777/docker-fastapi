@@ -1,15 +1,12 @@
-DROP TABLE IF EXISTS "tasks";
-DROP SEQUENCE IF EXISTS tasks_id_seq;
-CREATE SEQUENCE tasks_id_seq INCREMENT 1 MINVALUE 1 MAXVALUE 2147483647 CACHE 1;
-CREATE TABLE "public"."tasks" (
-    "id" integer DEFAULT nextval('tasks_id_seq') NOT NULL,
-    "content" character varying NOT NULL,
-    "urgence" integer NOT NULL,
-    "importance" integer NOT NULL,
+DROP TABLE IF EXISTS "pizzas";
+DROP SEQUENCE IF EXISTS pizzas_id_seq;
+CREATE SEQUENCE pizzas_id_seq INCREMENT 1 MINVALUE 1 MAXVALUE 2147483647 CACHE 1;
+CREATE TABLE "public"."pizzas" (
+    "id" integer DEFAULT nextval('pizzas_id_seq') NOT NULL,
+    "name" character varying NOT NULL,
     "created_at" timestamp NOT NULL,
     "updated_at" timestamp,
-    "is_completed" boolean NOT NULL,
-    "completed_at" timestamp,
-    CONSTRAINT "tasks_pkey" PRIMARY KEY ("id")
+    CONSTRAINT "pizzas_name_key" UNIQUE ("name"),
+    CONSTRAINT "pizzas_pkey" PRIMARY KEY ("id")
 ) WITH (oids = false);
-CREATE INDEX "ix_tasks_id" ON "public"."tasks" USING btree ("id");
+CREATE INDEX "ix_pizzas_id" ON "public"."pizzas" USING btree ("id");

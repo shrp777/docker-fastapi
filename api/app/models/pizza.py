@@ -23,45 +23,28 @@ SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 Base = declarative_base()
 
 
-class TaskEntity(Base):
+class PizzaEntity(Base):
     """
-    Modèle de la table tasks
+    Modèle de la table pizzas
     """
-    __tablename__ = "tasks"
+    __tablename__ = "pizzas"
     id = Column(Integer, primary_key=True, index=True, autoincrement=True)
-    content = Column(String, nullable=False)
-    urgence = Column(Integer, sa.CheckConstraint(
-        'urgence > 0 AND urgence < 6'), nullable=False)
-    importance = Column(Integer, sa.CheckConstraint(
-        'importance > 0 AND importance < 6'), nullable=False)
+    name = Column(String, nullable=False, unique=True)
     created_at = Column(DateTime, default=datetime.utcnow, nullable=False)
     updated_at = Column(DateTime, nullable=True, onupdate=datetime.utcnow)
-    is_completed = Column(Boolean, default=False, nullable=False)
-    completed_at = Column(DateTime, nullable=True)
 
 
-class Task(BaseModel):
+class Pizza(BaseModel):
     """
-    Task avec id + created_at + updated_at + completed_at
+    Modèle Pydantic
     """
     id: Optional[int] = None
-    content: str
-    urgence: int
-    importance: int
+    name: str
     created_at: Optional[datetime] = None
     updated_at: Optional[datetime] = None
-    completed_at: Optional[datetime] = None
-    is_completed: Optional[bool] = False
 
     class Config:
         from_attributes = True
-
-
-# class TaskCreateDTO(TaskBase):
-#     """
-#     Task sans id (utile pour la création)
-#     """
-#     pass
 
 
 Base.metadata.create_all(engine)

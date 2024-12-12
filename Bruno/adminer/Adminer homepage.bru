@@ -1,0 +1,18 @@
+meta {
+  name: Adminer homepage
+  type: http
+  seq: 1
+}
+
+get {
+  url: http://localhost:8181/?pgsql=db&username=pizzas&db=pizzas&ns=public
+  body: none
+  auth: none
+}
+
+params:query {
+  pgsql: db
+  username: pizzas
+  db: pizzas
+  ns: public
+}
