@@ -1,0 +1,293 @@
+{
+  "info": {
+    "name": "Pizzas API Python",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Documentation Swagger",
+      "event": [],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "auth": null,
+        "description": "",
+        "url": {
+          "raw": "http://localhost:8080/docs",
+          "protocol": "http",
+          "host": [
+            "localhost:8080"
+          ],
+          "path": [
+            "docs"
+          ],
+          "query": [],
+          "variable": []
+        }
+      }
+    },
+    {
+      "name": "Home",
+      "event": [],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "auth": null,
+        "description": "",
+        "url": {
+          "raw": "http://localhost:8080",
+          "protocol": "http",
+          "host": [
+            "localhost:8080"
+          ],
+          "path": [],
+          "query": [],
+          "variable": []
+        }
+      }
+    },
+    {
+      "name": "adminer",
+      "item": [
+        {
+          "name": "Adminer homepage",
+          "event": [],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "auth": null,
+            "description": "",
+            "url": {
+              "raw": "http://localhost:8181/?pgsql=db&username=pizzas&db=pizzas&ns=public",
+              "protocol": "http",
+              "host": [
+                "localhost:8181/"
+              ],
+              "path": [],
+              "query": [
+                {
+                  "key": "pgsql",
+                  "value": "db"
+                },
+                {
+                  "key": "username",
+                  "value": "pizzas"
+                },
+                {
+                  "key": "db",
+                  "value": "pizzas"
+                },
+                {
+                  "key": "ns",
+                  "value": "public"
+                }
+              ],
+              "variable": []
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "pizzas",
+      "item": [
+        {
+          "name": "Create",
+          "event": [],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "auth": null,
+            "description": "",
+            "url": {
+              "raw": "http://localhost:8080/pizzas/",
+              "protocol": "http",
+              "host": [
+                "localhost:8080"
+              ],
+              "path": [
+                "pizzas",
+                ""
+              ],
+              "query": [],
+              "variable": []
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\":\"Marinara\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Delete by Id",
+          "event": [],
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "auth": null,
+            "description": "",
+            "url": {
+              "raw": "http://localhost:8080/pizzas/1",
+              "protocol": "http",
+              "host": [
+                "localhost:8080"
+              ],
+              "path": [
+                "pizzas",
+                "1"
+              ],
+              "query": [],
+              "variable": []
+            }
+          }
+        },
+        {
+          "name": "Get 1 by Id",
+          "event": [],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "auth": null,
+            "description": "",
+            "url": {
+              "raw": "http://localhost:8080/pizzas/1",
+              "protocol": "http",
+              "host": [
+                "localhost:8080"
+              ],
+              "path": [
+                "pizzas",
+                "1"
+              ],
+              "query": [],
+              "variable": []
+            }
+          }
+        },
+        {
+          "name": "Get All",
+          "event": [],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "auth": null,
+            "description": "",
+            "url": {
+              "raw": "http://localhost:8080/pizzas",
+              "protocol": "http",
+              "host": [
+                "localhost:8080"
+              ],
+              "path": [
+                "pizzas"
+              ],
+              "query": [],
+              "variable": []
+            }
+          }
+        },
+        {
+          "name": "Search",
+          "event": [],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "auth": null,
+            "description": "",
+            "url": {
+              "raw": "http://localhost:8080/pizzas?name=Margherita",
+              "protocol": "http",
+              "host": [
+                "localhost:8080"
+              ],
+              "path": [
+                "pizzas"
+              ],
+              "query": [
+                {
+                  "key": "name",
+                  "value": "Margherita"
+                }
+              ],
+              "variable": []
+            }
+          }
+        },
+        {
+          "name": "Update by id",
+          "event": [],
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "auth": null,
+            "description": "",
+            "url": {
+              "raw": "http://localhost:8080/pizzas/1",
+              "protocol": "http",
+              "host": [
+                "localhost:8080"
+              ],
+              "path": [
+                "pizzas",
+                "1"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"id\":1,\n  \"name\":\"Marinara\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Update partially by id",
+          "event": [],
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "auth": null,
+            "description": "",
+            "url": {
+              "raw": "http://localhost:8080/pizzas/1",
+              "protocol": "http",
+              "host": [
+                "localhost:8080"
+              ],
+              "path": [
+                "pizzas",
+                "1"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"id\":1,\n  \"name\":\"Marinara\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "bruno",
+      "event": []
+    }
+  ],
+  "variable": []
+}
