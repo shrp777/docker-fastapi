@@ -1,16 +1,16 @@
 # Docker + FastAPI (Python) + PostgreSQL
 
-Projet de base pour la mise en place d'une API REST basée sur le langage Python et le framework FastAPI (<https://fastapi.tiangolo.com/>).
+Projet modèle pour la mise en place d'une API REST avec le langage Python et le framework FastAPI (<https://fastapi.tiangolo.com/>) et Docker.
 
 Ce projet est fourni à des fins pédagogiques.
 
 ## Stack technologique
 
-- Base de données : PostgreSQL
 - Langage de programmation : Python 3.10
 - Framework : FastAPI
-- ORM : SQLAlchemy
 - Validateur : Pydantic
+- Base de données : PostgreSQL
+- ORM : SQLAlchemy
 - Architecture d'API : REST
 
 ## Installation
