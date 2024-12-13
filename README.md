@@ -53,27 +53,35 @@ api
 `docker compose up`
 
 - Rénitialisation des services Docker (suppression des données) :
+
 `docker compose down`
 
 - Démarrage des services Docker en mode détaché (reprise de la main dans le terminal) :
+
 `docker compose up -d`
 
 - Démarrage des services Docker avec reconstruction de l'image Docker associé à chaque service :
+
 `docker compose up --build`
 
 - Démarrage des services Docker avec activation du mode watch (= hot reloading) :
+
 `docker compose up --watch`
 
 - Consultation des services Docker actifs :
+
 `docker compose ps`
 
 - Arrêt des services Docker :
+
 `docker compose stop`
 
 - Création d'une image Docker à partir du fichier Dockerfile et des sources :
+
 `docker build -t <image-name> .`
 
 - Création d'un container à partir de l'image `<image-name>` précédemment créée :
+
 `docker run -d --name <image-name> -p 8080:80 <image-name>`
 
 ### Volumes Docker
