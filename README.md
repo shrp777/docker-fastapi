@@ -1,12 +1,12 @@
 # Docker + FastAPI (Python) + PostgreSQL
 
-Projet modèle pour la mise en place d'une API REST avec le langage Python et le framework FastAPI (<https://fastapi.tiangolo.com/>) et Docker.
+Projet modèle pour la mise en place d'une __API REST__ avec le langage __Python__ et le framework __FastAPI__ (<https://fastapi.tiangolo.com/>) et Docker.
 
 Ce projet est fourni à des fins pédagogiques.
 
 ## Stack technologique
 
-- Langage de programmation : Python 3.10
+- Langage de programmation : Python (3.13.1)
 - Framework : FastAPI
 - Validateur : Pydantic
 - Base de données : PostgreSQL
@@ -17,8 +17,8 @@ Ce projet est fourni à des fins pédagogiques.
 
 Créer les fichiers :
 
-- ./api/.env
-- ./db/.env
+- ./api/.env (reprendre le contenu du fichier ./api/.env.example)
+- ./db/.env (reprendre le contenu du fichier ./db/.env.example)
 
 ## Arborescence du projet
 
@@ -28,9 +28,6 @@ api
 ├── README.md
 ├── app
 │   ├── __init__.py
-│   ├── __pycache__
-│   │   ├── __init__.cpython-39.pyc
-│   │   └── main.cpython-39.pyc
 │   ├── db.py
 │   ├── internal
 │   │   ├── __init__.py
@@ -52,25 +49,25 @@ api
 
 ## Commandes Docker utiles
 
-- Initialisation des services Docker :
+- Démarrage des services Docker :
 `docker compose up`
 
 - Rénitialisation des services Docker (suppression des données) :
 `docker compose down`
 
-- Initialisation des services Docker en mode détaché (reprise de la main dans le terminal) :
+- Démarrage des services Docker en mode détaché (reprise de la main dans le terminal) :
 `docker compose up -d`
 
-- Initialisation des services Docker avec reconstruction de l'image :
+- Démarrage des services Docker avec reconstruction de l'image Docker associé à chaque service :
 `docker compose up --build`
 
-- Initialisation des services Docker avec activation du mode watch (= hot reloading) :
+- Démarrage des services Docker avec activation du mode watch (= hot reloading) :
 `docker compose up --watch`
 
 - Consultation des services Docker actifs :
 `docker compose ps`
 
-- Clôture des services Docker :
+- Arrêt des services Docker :
 `docker compose stop`
 
 - Création d'une image Docker à partir du fichier Dockerfile et des sources :
@@ -79,7 +76,25 @@ api
 - Création d'un container à partir de l'image `<image-name>` précédemment créée :
 `docker run -d --name <image-name> -p 8080:80 <image-name>`
 
+### Volumes Docker
+
+Les lignes suivantes du fichier __docker-compose.yml__ sont commentées par défaut :
+
+```YAML
+# volumes:
+#   - ./db/init.sql:/docker-entrypoint-initdb.d/init.sql
+#   - ./db/data:/var/lib/postgresql/data/
+```
+
+L'activation de la ligne `- ./db/init.sql:/docker-entrypoint-initdb.d/init.sql` permet d'injecter des données dans la base de données.
+
+L'activation de la ligne `- ./db/data:/var/lib/postgresql/data/` permet de conserver une sauvegarde du contenu de la base de données dans le dossier local ./db/data
+
 ## Routes de l'API
+
+### Test de l'API avec Bruno ou Postman
+
+Les collections de requêtes HTTP pour tester l'API sont disponibles dans ./Bruno et ./Postman.
 
 ### Documentation Swagger générée automatiquement par FastAPI
 
@@ -139,10 +154,10 @@ Pour des raisons de sécurité, __désactiver ce service en production__.
 
 - Interface d'administration web [Adminer](http://localhost:8181/?pgsql=db&username=pizzas&db=pizzas&ns=public)
 - Sélectionner Système : __postgresql__
-- Serveur : __db__
-- Utilisateur : cf. ./db/.env
-- Mot de passe : cf. ./db/.env
-- Base de données : cf. ./db/.env
+- Serveur : __db__ (= nom du service Docker)
+- Utilisateur : voir valeur définie dans ./db/.env
+- Mot de passe : voir valeur définie dans ./db/.env
+- Base de données : voir valeur définie dans ./db/.env
 
 ## Base de données PostgreSQL
 

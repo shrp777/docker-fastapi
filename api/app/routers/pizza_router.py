@@ -11,11 +11,13 @@ from ..db import get_db
 
 from datetime import datetime
 
+from ..services.pizza_service import PizzaService
+
 router = APIRouter(
     prefix="/pizzas",
     tags=["pizzas"]
 )
-# CREATE
+# CREATE ITEM
 # TODO:implémenter la route permettant de créer un item
 
 
@@ -25,12 +27,13 @@ def create_item(db: Session = Depends(get_db)):
     Création d'un item
     """
     try:
+        # TODO: route à implémenter
         return {"message": "To do"}
     except Exception as e:
         print(e)
         raise HTTPException(status_code=500)
 
-# READ ALL
+# READ ALL ITEMS
 
 
 @router.get("/", response_model=List[Pizza])
@@ -40,15 +43,31 @@ def get_all_items(db: Session = Depends(get_db), name: str = None):
     """
     try:
         if name != None:
+            # Si query param name renseigné dans l'URL
+            # Effectue une recherche basée sur une variable name fournie en option dans l'URL
+            #
+            # Option A : Lecture directe dans la BDD avec l'ORM
             return db.query(PizzaEntity).filter(PizzaEntity.name.ilike('%'+name+'%'))
-
+            #
+            # Option B : Emploi de la classe PizzaService
+            # service = PizzaService(db)
+            # return service.search_by_name(name)
         else:
+            # Sinon, récupère tous les items
+            #
+            # Option A : Lecture directe dans la BDD avec l'ORM
             return db.query(PizzaEntity).all()
+            #
+            # OU
+            #
+            # Option B : Emploi de la classe PizzaService
+            # service = PizzaService(db)
+            # return service.find_all()
     except Exception as e:
         print(e)
         raise HTTPException(status_code=500)
 
-# READ ONE
+# READ ONE ITEM
 
 
 @router.get("/{id}", response_model=Pizza)
@@ -57,15 +76,21 @@ def get_one_item(id: int, db: Session = Depends(get_db)):
     Lecture d'un item sélectionné selon son id
     """
     try:
+        # Option A : Lecture directe dans la BDD avec l'ORM
         pizza = db.query(PizzaEntity).filter(PizzaEntity.id == id).first()
+        #
+        # OU
+        #
+        # Option B : Emploi de la classe PizzaService
+        # service = PizzaService(db)
+        # pizza = service.find_one_by_id(id)
         if not pizza:
-            raise HTTPException(status_code=404, detail="Pizza not found")
+            raise Exception('Not found')
         else:
             return pizza
     except Exception as e:
-        print(e)
-        if e.__eq__("404: Pizza not found"):
-            raise e
+        if e.__eq__("Not found"):
+            raise HTTPException(status_code=404, detail="Pizza not found")
         else:
             raise HTTPException(status_code=500)
 
@@ -79,6 +104,7 @@ def update_item(id: int, db: Session = Depends(get_db)):
     Mise à jour complète d'un item sélectionné selon son id
     """
     try:
+        # TODO: route à implémenter
         return {"message": "To do"}
     except Exception as e:
         print(e)
@@ -94,6 +120,7 @@ def update_item(id: int, db: Session = Depends(get_db)):
     Mise à jour partielle d'un item sélectionné selon son id
     """
     try:
+        # TODO: route à implémenter
         return {"message": "To do"}
     except Exception as e:
         print(e)
@@ -109,10 +136,8 @@ def update_item(id: int, db: Session = Depends(get_db)):
     Suppression d'un item sélectionné selon son id
     """
     try:
+        # TODO: route à implémenter
         return {"message": "To do"}
     except Exception as e:
         print(e)
         raise HTTPException(status_code=500)
-
-# SEARCH
-# TODO:implémenter la route permettant de rechercher un item

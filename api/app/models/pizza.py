@@ -22,10 +22,14 @@ engine = create_engine(
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 Base = declarative_base()
 
+# Ci-dessous, la définition du modèle de données avec l'ORM SQLAlchemy génère automatiquement la table dans la base de données
+
 
 class PizzaEntity(Base):
     """
-    Modèle de la table pizzas
+    Modèle de la table pizzas géré par l'ORM SQLAlchemy
+    - valeur de created_at est automatiquement initialisée à la création d'un item
+    - valeur de updated_at est automatiquement initialisée à la mise à jour d'un item
     """
     __tablename__ = "pizzas"
     id = Column(Integer, primary_key=True, index=True, autoincrement=True)
@@ -36,7 +40,7 @@ class PizzaEntity(Base):
 
 class Pizza(BaseModel):
     """
-    Modèle Pydantic
+    Modèle de données Pydantic
     """
     id: Optional[int] = None
     name: str
