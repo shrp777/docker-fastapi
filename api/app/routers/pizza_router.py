@@ -74,7 +74,7 @@ def get_one_item(id: int, db: Session = Depends(get_db)):
 
 
 @router.put("/{id}")
-def update_item(db: Session = Depends(get_db)):
+def update_item(id: int, db: Session = Depends(get_db)):
     """
     Mise à jour complète d'un item sélectionné selon son id
     """
@@ -89,7 +89,7 @@ def update_item(db: Session = Depends(get_db)):
 
 
 @router.patch("/{id}")
-def update_item(db: Session = Depends(get_db)):
+def update_item(id: int, db: Session = Depends(get_db)):
     """
     Mise à jour partielle d'un item sélectionné selon son id
     """
@@ -104,7 +104,7 @@ def update_item(db: Session = Depends(get_db)):
 
 
 @router.delete("/{id}")
-def update_item(db: Session = Depends(get_db)):
+def update_item(id: int, db: Session = Depends(get_db)):
     """
     Suppression d'un item sélectionné selon son id
     """

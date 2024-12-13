@@ -10,3 +10,10 @@ CREATE TABLE "public"."pizzas" (
     CONSTRAINT "pizzas_pkey" PRIMARY KEY ("id")
 ) WITH (oids = false);
 CREATE INDEX "ix_pizzas_id" ON "public"."pizzas" USING btree ("id");
+INSERT INTO "pizzas" ("id", "name", "created_at", "updated_at")
+VALUES (
+        1,
+        'Margherita',
+        '2024-12-12 13:25:25.162192',
+        NULL
+    );
